@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use PhpMqtt\Client\Exceptions\MqttClientException;
 use PhpMqtt\Client\Facades\MQTT;
 
 class TestMqttConnection extends Command
@@ -27,14 +28,18 @@ class TestMqttConnection extends Command
     public function handle()
     {
         $this->info('Teste iniciado...');
-        /** @var \PhpMqtt\Client\Contracts\MqttClient $mqtt */
-        $mqtt = MQTT::connection();
-        $this->info('Conexao bem sucedida. Publicando mensagem...');
-        // $mqtt->publish('some/topic', 'foo', 1); // QoS 1
-        $mqtt->publish('some/topic', 'bar', 2, true); // QoS 2 Retain the message
-        $mqtt->loop(true, true);
+        try {
+            $mqtt = MQTT::connection();
+            $this->info('Conexao bem sucedida. Publicando mensagem...');
+            $mqtt->publish('some/topic', 'bar', 2); // QoS 2
+            $mqtt->loop(true, true);
 
-        // MQTT::publish('some/topic', 'Hello World!'); // QoS 0
+            $mqtt->disconnect();
+        } catch (MqttClientException $e) {
+            $this->error($e->getMessage());
+            return -1;
+        }
+        
         $this->info('Mensagem publicada.');
         return 0;
     }

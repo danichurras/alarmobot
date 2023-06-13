@@ -22,6 +22,8 @@ class MqttApiController extends Controller
         $mqtt->publish($topic, $message, 2);
         $mqtt->loop(true, true);
 
+        $mqtt->disconnect();
+
         return response()->json();
     }
 
@@ -41,6 +43,8 @@ class MqttApiController extends Controller
             MqttMessageReceived::dispatch($topic, $message);
         }, 2);
         $mqtt->loop(true, true);
+
+        $mqtt->disconnect();
 
         return response()->json();
     }
