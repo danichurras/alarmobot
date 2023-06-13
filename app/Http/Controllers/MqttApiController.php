@@ -32,11 +32,9 @@ class MqttApiController extends Controller
     {
         $validatedRequest = $request->validate([
             'topic' => 'required',
-            'message' => 'required'
         ]);
 
         $topic = $validatedRequest['topic'];
-        $message = $validatedRequest['message'];
 
         $mqtt = MQTT::connection();
         $mqtt->subscribe($topic, function (string $topic, string $message) {
