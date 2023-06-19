@@ -21,7 +21,8 @@ php artisan migrate
 npm i
 npm run dev
 
-# após compilado caso precise de espaço no servidor pode apagar a pasta de pacotes de dependências do node
+# após compilado caso precise de espaço no servidor
+# pode apagar a pasta de pacotes de dependências do node
 rm -rfd node_modules
 ```
 
