@@ -45,6 +45,6 @@ class User extends Authenticatable
 
     public function alarmes()
     {
-        return $this->hasMany(Alarme::class, 'user_id', 'id');
+        return $this->hasMany(Alarme::class);
     }
 }

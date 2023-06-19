@@ -11,8 +11,8 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100 mt-8">
                     <form method="POST" action="{{route('alarmes.salvar')}}">
                         @csrf
-                        <label for="nome" style="padding-right: 5px">Nome do Alarme:</label>
-                        <input type="text" id="nome" name="nome" required style="color: black">
+                        
+                        @include('alarmes.form')
 
                         <input type="hidden" id="user_id" name="user_id" value="{{$usuario->id}}" required>
                         <input type="hidden" id="status" name="status" value="desativado" required>

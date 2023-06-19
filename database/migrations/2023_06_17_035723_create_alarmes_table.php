@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('nome', 100);
             $table->string('status', 20)->nullable();
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained();
         });
     }
 

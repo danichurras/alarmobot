@@ -13,8 +13,7 @@
                         @csrf
                         @method('PUT')
 
-                        <label for="nome" style="padding-right: 5px">Nome do Alarme:</label>
-                        <input type="text" id="nome" name="nome" required style="color: black" value="{{$alarme->nome}}">
+                        @include('alarmes.form')
 
                         <div class="flex justify-center sm:items-center sm:justify-between ml-10 mr-10 mt-10">
                             <a href="{{ route('alarmes.listar') }}" class="hover:text-white">Cancelar</a>

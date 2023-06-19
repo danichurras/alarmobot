@@ -33,6 +33,7 @@ class AlarmeController extends Controller
         $validateRequest = $request->validate([
             'nome' => 'required|max:100',
             'user_id' => 'required',
+            'status' => 'required'
         ]);
 
         $dados = collect($validateRequest);
