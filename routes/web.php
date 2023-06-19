@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AlarmeController;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +22,7 @@ Route::get('/', function () {
 });
 
 //Dashboard
-Route::get('/dashboard', [Controller::class, 'dashboard'])
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
