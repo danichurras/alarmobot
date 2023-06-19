@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AlarmeController;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,18 +16,35 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Inicial
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+//Dashboard
+Route::get('/dashboard', [Controller::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    //Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //Alarmes
+    Route::prefix('/alarmes')->name('alarmes.')->group(function () {
+        Route::get('/listar', [AlarmeController::class, 'listar'])->name('listar');
+        Route::get('/cadastrar', [AlarmeController::class, 'cadastrar'])->name('cadastrar');
+        Route::post('/salvar', [AlarmeController::class, 'salvar'])->name('salvar');
+
+        Route::prefix('/{id}')->group(function () {
+            Route::get('/editar', [AlarmeController::class, 'editar'])->name('editar');
+            Route::put('/atualizar', [AlarmeController::class, 'atualizar'])->name('atualizar');
+            Route::delete('/deletar', [AlarmeController::class, 'deletar'])->name('deletar');
+            Route::get('/gerenciar', [AlarmeController::class, 'gerenciar'])->name('gerenciar');
+            Route::put('/atualizarStatus', [AlarmeController::class, 'atualizarStatus'])->name('atualizarStatus');
+        });
+    });
 });
 
 require __DIR__.'/auth.php';
