@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Carbon;
 
 class MqttMessageReceived
 {
@@ -23,7 +24,9 @@ class MqttMessageReceived
     public function __construct(string $topic, string $message)
     {
         $this->topic = $topic;
-        $this->message = $message;
+        $message_object = json_decode($message);
+        $message_object->triggerTime = new Carbon($message_object->triggerTime);
+        $this->message = $message_object;
     }
 
     /**

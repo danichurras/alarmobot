@@ -6,6 +6,7 @@ use App\Events\MqttMessageReceived;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use PhpMqtt\Client\Facades\MQTT;
 
@@ -54,6 +55,9 @@ class SubscribeToTopic extends Command implements Isolatable
         $this->info("Subscribe no tópico: $topic");
         $this->mqtt->subscribe($topic, function (string $topic, string $message) {
             MqttMessageReceived::dispatch($topic, $message);
+            $message_object = json_decode($message);
+            $message_object->triggerTime = new Carbon($message_object->triggerTime);
+            $message = json_encode($message_object);
             $this->info("Received QoS level 2 message on topic [$topic]: $message");
         }, 2);
         $this->mqtt->loop(true, true);
