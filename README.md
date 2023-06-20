@@ -4,26 +4,29 @@ Essa aplicação Laravel serve como interface de usuário para controle de usuá
 ## Instalação
 
 ```bash
-# troque o diretório para seu espaço de trabalho desejado
-cd path_para_seu_workspace
 # clone o repositório
 git clone https://github.com/DanielChavesSimao/alarmobot.git
 # vá para a pasta raíz da aplicação
 cd alarmobot
+```
+```bash
 # instale as dependências do composer
 composer install
 # configure suas variáveis de ambiente para conexão com o banco e com o broker MQTT
 cp .env.example .env
 vi .env
+```
+```bash
 # crie a estrutura do banco
 php artisan migrate
 # instale e compile as dependências do front-end
-npm i
-npm run dev
-
-# após compilado caso precise de espaço no servidor
-# pode apagar a pasta de pacotes de dependências do node
-rm -rfd node_modules
+npm i && npm run dev
 ```
+
+Este comando vai gerar o processo que cuidará do recebimento de mensagens dos alarmes, por isso deverá estar sempre rodando.
+```bash
+php artisan mqtt:subscribe
+```
+> Nota: Recomenda-se o uso de um supervisor como o supervisord.
 
 ## Configuração
