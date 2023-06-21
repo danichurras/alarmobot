@@ -16,7 +16,7 @@ class Alarme extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'nome', 'status', 'user_id'
+        'nome', 'status', 'user_id', 'mac_esp',
     ];
 
     public function user()
