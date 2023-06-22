@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('/deletar', [AlarmeController::class, 'deletar'])->name('deletar');
             Route::get('/gerenciar', [AlarmeController::class, 'gerenciar'])->name('gerenciar');
             Route::put('/atualizarStatus', [AlarmeController::class, 'atualizarStatus'])->name('atualizarStatus');
+            Route::get('/ativacoes', [AlarmeController::class, 'ativacoes'])->name('ativacoes');
         });
     });
 });
