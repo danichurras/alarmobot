@@ -16,7 +16,7 @@ class MqttMessageReceived
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public string $topic;
-    public string $message;
+    public mixed $message;
 
     /**
      * Create a new event instance.

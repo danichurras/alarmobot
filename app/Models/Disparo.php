@@ -9,7 +9,7 @@ class Disparo extends Model
 {
     use HasFactory;
 
-    protected $table = 'ativacaos';
+    protected $table = 'disparos';
     
     protected $primary_key = 'id';
 
