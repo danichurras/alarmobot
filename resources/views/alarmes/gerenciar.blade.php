@@ -32,6 +32,11 @@
     
                         </form> 
                     </div>  
+
+                    <div class="relative sm:flex sm:justify-center mt-16">
+                        <a href="{{ route('alarmes.ativacoes', $alarme->id) }}" class="hover:text-white">Listar Ativações</a>
+                    </div>
+
                 </div>
             </div>
         </div>

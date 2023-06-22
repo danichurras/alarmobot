@@ -23,4 +23,9 @@ class Alarme extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function ativacaos()
+    {
+        return $this->hasMany(Ativacao::class);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alarme;
+use App\Models\Ativacao;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,7 +35,7 @@ class AlarmeController extends Controller
             'nome' => 'required|max:100',
             'user_id' => 'required',
             'status' => 'required',
-            'mac_esp' => 'required|max:17'
+            'mac_esp' => 'required|size:17'
         ]);
 
         $dados = collect($validateRequest);
@@ -139,8 +140,43 @@ class AlarmeController extends Controller
             ], 500);
         }
 
+
+        if($newStatus == 'ativado') {
+            $a = new Ativacao();
+            $a->fill([
+                'data_ativacao' => now(),
+                'alarme_id' => $alarme->id
+            ]);
+            $salvouAtiv = $a->save();
+
+            if (!$salvouAtiv) {
+                return response()->json([
+                    "message" => "Não foi possível salvar a ativação no banco."
+                ], 500);
+            }
+        } else {
+            $a = Ativacao::where('alarme_id', '=', $alarme->id)->latest()->first();
+            
+            $atualizouAtiv = $a->update([
+                'data_desativacao' => now()
+            ]);
+
+            if (!$atualizouAtiv) {
+                return response()->json([
+                    "message" => "Não foi possível atualizar a ativação no banco. (500)"
+                ], 500);
+            }
+        }
+
         return redirect()
             ->route('alarmes.gerenciar', $alarme)
             ->withSuccess('Alarme' . $newStatus . '.');
+    }
+
+    public function ativacoes(int $id) : View
+    {
+        $alarme = Alarme::find($id);
+
+        return view('alarmes.ativacoes', compact('alarme'));
     }
 }
