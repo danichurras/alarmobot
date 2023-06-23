@@ -16,11 +16,20 @@ class Disparo extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'hora_disparo', 'ativacao_id'
+        'hora_disparo', 'ativacao_id', 'silenciado'
     ];
 
     public function ativacao()
     {
         return $this->belongsTo(Ativacao::class);
+    }
+
+    public function getSilenciouAttribute()
+    {
+        if ($this->silenciado) {
+            return 'Sim';
+        } else {
+            return 'Não';
+        }
     }
 }

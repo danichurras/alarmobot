@@ -28,7 +28,6 @@
 
         if (valor.length !== 17) {
             alert("O campo deve ter exatamente 17 dígitos.");
-            elemento.value = null; // Retornar o foco ao campo de texto
         }
     }
 </script>
