@@ -15,9 +15,9 @@
                         @if($usuario->alarmes->isEmpty())
                             Parece que você ainda não possui nenhum alarme cadastrado. Clique no botão abaixo para criar seu primeiro alarme!
                             <br><br>
-                            <a href="{{ route('alarmes.cadastrar') }}" class="hover:text-white"> Cadastrar Alarme</a>
+                            <a href="{{ route('alarmes.cadastrar') }}"><x-primary-button type="button">Cadastrar Alarme</x-primary-button></a>
                         @else
-                            <a href="{{ route('alarmes.listar') }}" class="hover:text-white"> Listar Alarme(s)</a>
+                            <a href="{{ route('alarmes.listar') }}"><x-primary-button type="button">Listar Alarme(s)</x-primary-button></a>
                         @endif
                     </p>    
                 </div>

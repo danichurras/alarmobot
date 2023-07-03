@@ -1,16 +1,11 @@
 @props(['alarme' => null])
-<label for="nome" style="padding-right: 5px">Nome do Alarme:</label>
 
-<input type="text" id="nome" name="nome" required style="color: black" 
-    value="{{$alarme?->nome}}">
+<x-input-label for="nome" value="Nome do Alarme"/>
+<x-text-input id="nome" name="nome" class="block" required :value="$alarme?->nome"/>
 
-<br><br>
-
-<label for="mac_esp" style="padding-right: 5px;">MAC do ESP:</label>
-
-<input type="text" id="mac_esp" name="mac_esp" required style="color: black" 
-    value="{{$alarme?->mac_esp}}" 
-    maxlength="17" oninput="updateCharacterCount(this)" onfocusout="verificarTamanho(this);">   
+<x-input-label for="mac_esp" class="mt-2" value="MAC do ESP"/>
+<x-text-input name="mac_esp" class="mb-4" required :value="$alarme?->mac_esp"
+    maxlength="17" oninput="updateCharacterCount(this)" onfocusout="verificarTamanho(this)"/>
 
 <div class="counter"></div>
 
@@ -27,7 +22,7 @@
         const valor = elemento.value.trim(); // Remover espaços em branco antes e depois do valor
 
         if (valor.length !== 17) {
-            alert("O campo deve ter exatamente 17 dígitos.");
+            // alert("O campo deve ter exatamente 17 dígitos.");
         }
     }
 </script>
