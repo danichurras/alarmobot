@@ -12,7 +12,9 @@ class DashboardController extends Controller
     {
         $usuario = Auth::user();
 
-        return view('dashboard', compact('usuario'));
+        $alarmes = $usuario->alarmes;
+
+        return view('dashboard', compact('usuario', 'alarmes'));
     }
 
 }
