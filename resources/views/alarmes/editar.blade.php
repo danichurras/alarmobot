@@ -9,6 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 mt-8">
+
                     <form method="POST" action="{{route('alarmes.atualizar', $alarme->id)}}">
                         @csrf
                         @method('PUT')
@@ -16,12 +17,12 @@
                         @include('alarmes.form')
 
                         <div class="flex justify-center sm:items-center sm:justify-between ml-10 mr-10 mt-10">
-                            <a href="{{ route('alarmes.listar') }}" class="hover:text-white">Cancelar</a>
-                            <button class="hover:text-white" type="submit">
+                            <a href="{{ route('dashboard') }}"><x-danger-button type="button">Cancelar</x-danger-button></a>
+                            <x-success-button type="submit">
                                 Atualizar
-                            </button>
+                            </x-success-button>
                         </div>
-                    </form>   
+                    </form>  
                 </div>
             </div>
         </div>

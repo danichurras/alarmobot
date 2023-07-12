@@ -10,19 +10,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class AlarmeController extends Controller
 {
-    public function listar() : View
-    {
-        $usuario = Auth::user();
-        
-        $alarmes = $usuario->alarmes;
-
-        return view('alarmes.listar', compact('alarmes'));
-    }
-
     public function cadastrar(): View
     {
         $usuario = Auth::user();
@@ -52,7 +42,7 @@ class AlarmeController extends Controller
         }
 
         return redirect()
-            ->route('alarmes.listar')
+            ->route('dashboard')
             ->withSuccess('Alarme cadastrado com sucesso.');
     }
 
@@ -90,19 +80,29 @@ class AlarmeController extends Controller
         }
 
         return redirect()
-            ->route('alarmes.listar')
+            ->route('dashboard')
             ->withSuccess('Alarme atualizado com sucesso.');
 
     }
 
     public function deletar(int $id) : RedirectResponse|JsonResponse
     {
-        $a = Alarme::find($id);
+        $a = Alarme::findOrFail($id);
 
         if (!$a) {
             return response()->json([
                 "message" => "Alarme não encontrado."
             ], 404);
+        }
+
+        foreach ($a->ativacaos as $ativacao) 
+        {
+            foreach ($ativacao->disparos as $disparo)
+            {
+                $disparo->delete();
+            }
+
+            $ativacao->delete();
         }
 
         $deletou = $a->delete();
@@ -114,7 +114,7 @@ class AlarmeController extends Controller
         }
 
         return redirect()
-            ->route('alarmes.listar')
+            ->route('dashboard')
             ->withSuccess('Alarme deletado com sucesso.');
     }
 
@@ -140,7 +140,6 @@ class AlarmeController extends Controller
                 "message" => "Não foi possível atualizar o status do alarme. (500)"
             ], 500);
         }
-
 
         if($newStatus == 'ativado') {
             $a = new Ativacao();
@@ -171,13 +170,6 @@ class AlarmeController extends Controller
 
         return redirect()
             ->route('alarmes.gerenciar', $alarme)
-            ->withSuccess('Alarme' . $newStatus . '.');
-    }
-
-    public function ativacoes(int $id) : View
-    {
-        $alarme = Alarme::find($id);
-
-        return view('alarmes.ativacoes', compact('alarme'));
+            ->withSuccess('Alarme ' . $newStatus . '.');
     }
 }

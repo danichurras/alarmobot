@@ -18,12 +18,12 @@
                         <input type="hidden" id="status" name="status" value="desativado" required>
 
                         <div class="flex justify-center sm:items-center sm:justify-between ml-10 mr-10 mt-10">
-                            <a href="{{ route('alarmes.listar') }}">
+                            <a href="{{ route('dashboard') }}">
                                 <x-danger-button type="button">Cancelar</x-danger-button>
                             </a>
-                            <x-primary-button type="submit">
+                            <x-success-button type="submit">
                                 Cadastrar
-                            </x-primary-button>
+                            </x-success-button>
                         </div>
                     </form>   
                 </div>

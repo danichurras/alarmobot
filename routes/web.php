@@ -33,7 +33,6 @@ Route::middleware('auth')->group(function () {
 
     //Alarmes
     Route::prefix('/alarmes')->name('alarmes.')->group(function () {
-        Route::get('/listar', [AlarmeController::class, 'listar'])->name('listar');
         Route::get('/cadastrar', [AlarmeController::class, 'cadastrar'])->name('cadastrar');
         Route::post('/salvar', [AlarmeController::class, 'salvar'])->name('salvar');
 
@@ -43,7 +42,6 @@ Route::middleware('auth')->group(function () {
             Route::delete('/deletar', [AlarmeController::class, 'deletar'])->name('deletar');
             Route::get('/gerenciar', [AlarmeController::class, 'gerenciar'])->name('gerenciar');
             Route::put('/atualizarStatus', [AlarmeController::class, 'atualizarStatus'])->name('atualizarStatus');
-            Route::get('/ativacoes', [AlarmeController::class, 'ativacoes'])->name('ativacoes');
         });
     });
 });

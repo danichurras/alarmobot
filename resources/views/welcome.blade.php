@@ -19,25 +19,25 @@
         <div class="relative sm:flex sm:justify-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
 
             <div class="max-w-7xl mx-auto p-6 lg:p-8">
-                <div class="flex justify-center" style="margin-top: 200px">
-                    <x-application-logo></x-application-logo>
+                <div class="flex justify-center" style="margin-top: 200px;">
+                    <x-application-logo style="height: 150px; width: 150px"></x-application-logo>
                 </div>
 
                 <div class="flex justify-center mt-16 px-0">    
                     <div class="text-center text-sm text-gray-500 dark:text-gray-400 sm:text-left">
-                        <span style="font-size: 25px">Bem Vindo Ao Alarme do Balaco Baco</span>
+                        <span style="font-size: 40px">Bem Vindo Ao AlarmeBot</span>
                     </div>
                 </div>
 
                 <div class="flex justify-center mt-16 px-0 sm:items-center sm:justify-between" style="margin-top: 150px">
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
+                            <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white" style="font-size: 30px;padding-left: 100px">Acessar Dashboard</a>
                         @else
                             @if (Route::has('register'))
                                 <div class="text-center text-sm text-gray-500 dark:text-gray-400 sm:text-left">
                                     <div class="flex items-center gap-4">
-                                        <a href="{{ route('register') }}" class="group inline-flex items-center hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500" style="font-size: 20px">
+                                        <a href="{{ route('register') }}" class="group inline-flex items-center hover:text-gray-700 dark:hover:text-white" style="font-size: 30px">
                                             Registrar
                                         </a>
                                     </div>
@@ -45,7 +45,7 @@
                             @endif
                             <div class="text-center text-sm text-gray-500 dark:text-gray-400 sm:text-right">
                                 <div class="flex items-center gap-4">
-                                    <a href="{{ route('login') }}" class="group inline-flex items-center hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500" style="font-size: 20px">
+                                    <a href="{{ route('login') }}" class="group inline-flex items-center hover:text-gray-700 dark:hover:text-white" style="font-size: 30px">
                                         Login
                                     </a>
                                 </div>
