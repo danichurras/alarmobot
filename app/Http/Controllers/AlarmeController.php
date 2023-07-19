@@ -123,22 +123,7 @@ class AlarmeController extends Controller
     {
         $alarme = Alarme::findOrFail($id);
         
-        if ($alarme->status === 'ativado') {
-            $a = Ativacao::where('alarme_id', '=', $alarme->id)->latest()->first();
-
-            if($a->disparos->isEmpty()){
-                $disparado = false;
-            } else {
-                $disparo = Disparo::where('ativacao_id', '=', $a->id)->where('silenciado', '=', false)->latest()->first();
-                if(isset($disparo)) {
-                    $disparado = true;
-                } else {
-                    $disparado = false;
-                }
-            }
-        } else {
-            $disparado = false;
-        }
+        $disparado = $alarme->disparado;
 
         return view('alarmes.gerenciar', compact('alarme', 'disparado'));
     }

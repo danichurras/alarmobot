@@ -121,7 +121,7 @@
                                         <td style="text-align: center;">{{$ativacao->data_desativacao}}</td>
                                         <td style="text-align: center;">
                                             @if($ativacao->disparo)
-                                                <button onclick="openModal({{json_encode($ativacao->disparos->toArray())}})" style="color: rgb(107, 145, 223); text-decoration: underline;">
+                                                <button onclick="openModal({{$ativacao->id}})" style="color: rgb(107, 145, 223); text-decoration: underline;">
                                                     {{$ativacao->disparou}}
                                                 </button>
                                             @else
@@ -143,10 +143,10 @@
         </div>
     </div>
 
-    @if($alarme->ativacaos->count() > 0)
-        <div id="ModalDisparos" class="modal">
+    @foreach ($alarme->ativacaos as $ativacao)
+        <div id="modal_{{$ativacao->id}}" class="modal">
             <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
+                <span class="close" onclick="closeModal({{$ativacao->id}})">&times;</span>
                 
                 <div class="relative sm:flex sm:justify-center">
                     <table style="border-collapse: collapse; color:ghostwhite;" border="1">
@@ -171,21 +171,18 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endforeach
 
 </x-app-layout>
 
 <script>
-    function openModal(disparos) {
-        var modal = document.getElementById("ModalDisparos");
+    function openModal(ativacao_id) {
+        var modal = document.getElementById("modal_" + ativacao_id);
         modal.style.display = "block";
-
-        //todo arrumar modal?
-        console.log(disparos)
     }
 
-    function closeModal() {
-        var modal = document.getElementById("ModalDisparos");
+    function closeModal(ativacao_id) {
+        var modal = document.getElementById("modal_" + ativacao_id);
         modal.style.display = "none";
     }
 </script>
