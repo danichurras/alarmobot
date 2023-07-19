@@ -63,28 +63,40 @@
                     <div class="relative sm:flex sm:justify-center">
                         <p style="font-size: 25px;">
                             O status atual do alarme é: 
-                            <span style="text-transform: uppercase">{{$alarme->status}}</span>.
+                            <span style="text-transform: uppercase">
+                                {{$disparado ? 'DISPARADO' : $alarme->status}}
+                            </span>
                         </p>
                     </div>
 
-                    <div class="relative sm:flex sm:justify-center mt-16">
-                        <form method="POST" action="{{route('alarmes.atualizarStatus', $alarme->id)}}">
-                            @csrf
-                            @method('PUT')
-                        
-                                @if($alarme->status == "desativado")
-                                    <x-success-button type="submit">
-                                        Ativar
-                                    </x-success-button>
-                                @else
+                    @if($disparado)
+                        <div class="relative sm:flex sm:justify-center mt-16">
+                            <form method="POST" action="{{route('alarmes.silenciar', $alarme->id)}}">
+                                @csrf
+                                @method('PUT')
                                     <x-danger-button type="submit">
-                                        Desativar  
+                                        Silenciar  
                                     </x-danger-button>
-                                @endif
+                            </form> 
+                        </div>
+                    @else
+                        <div class="relative sm:flex sm:justify-center mt-16">
+                            <form method="POST" action="{{route('alarmes.atualizarStatus', $alarme->id)}}">
+                                @csrf
+                                @method('PUT')
                             
-    
-                        </form> 
-                    </div> 
+                                    @if($alarme->status == "desativado")
+                                        <x-success-button type="submit">
+                                            Ativar
+                                        </x-success-button>
+                                    @else
+                                        <x-danger-button type="submit">
+                                            Desativar  
+                                        </x-danger-button>
+                                    @endif
+                            </form> 
+                        </div>
+                    @endif 
                     
                     <div class="relative sm:flex sm:justify-center mt-14">
                         <p style="font-size: 25px; font-weight: bold;">
@@ -109,7 +121,7 @@
                                         <td style="text-align: center;">{{$ativacao->data_desativacao}}</td>
                                         <td style="text-align: center;">
                                             @if($ativacao->disparo)
-                                                <button onclick="openModal()" style="color: rgb(107, 145, 223); text-decoration: underline;">
+                                                <button onclick="openModal({{json_encode($ativacao->disparos->toArray())}})" style="color: rgb(107, 145, 223); text-decoration: underline;">
                                                     {{$ativacao->disparou}}
                                                 </button>
                                             @else
@@ -164,9 +176,12 @@
 </x-app-layout>
 
 <script>
-    function openModal() {
+    function openModal(disparos) {
         var modal = document.getElementById("ModalDisparos");
         modal.style.display = "block";
+
+        //todo arrumar modal?
+        console.log(disparos)
     }
 
     function closeModal() {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Alarme;
 use App\Models\Ativacao;
+use App\Models\Disparo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -48,7 +49,7 @@ class AlarmeController extends Controller
 
     public function editar(int $id) : View
     {
-        $alarme = Alarme::find($id);
+        $alarme = Alarme::findOrFail($id);
 
         return view ('alarmes.editar', compact('alarme'));
     }
@@ -62,7 +63,7 @@ class AlarmeController extends Controller
 
         $dados = collect($validateRequest);
 
-        $a = Alarme::find($id);
+        $a = Alarme::findOrFail($id);
 
         if (is_null($a)) {
             return response()->json([
@@ -120,14 +121,31 @@ class AlarmeController extends Controller
 
     public function gerenciar(int $id) : View
     {
-        $alarme = Alarme::find($id);
+        $alarme = Alarme::findOrFail($id);
+        
+        if ($alarme->status === 'ativado') {
+            $a = Ativacao::where('alarme_id', '=', $alarme->id)->latest()->first();
 
-        return view('alarmes.gerenciar', compact('alarme'));
+            if($a->disparos->isEmpty()){
+                $disparado = false;
+            } else {
+                $disparo = Disparo::where('ativacao_id', '=', $a->id)->where('silenciado', '=', false)->latest()->first();
+                if(isset($disparo)) {
+                    $disparado = true;
+                } else {
+                    $disparado = false;
+                }
+            }
+        } else {
+            $disparado = false;
+        }
+
+        return view('alarmes.gerenciar', compact('alarme', 'disparado'));
     }
 
     public function atualizarStatus(int $id) : RedirectResponse|JsonResponse
     {
-        $alarme = Alarme::find($id);
+        $alarme = Alarme::findOrFail($id);
 
         $newStatus = ($alarme->status == 'desativado') ? 'ativado' : 'desativado';
 
@@ -171,5 +189,35 @@ class AlarmeController extends Controller
         return redirect()
             ->route('alarmes.gerenciar', $alarme)
             ->withSuccess('Alarme ' . $newStatus . '.');
+    }
+
+    public function silenciar (int $id) {
+
+        $alarme = Alarme::findOrFail($id);
+
+        $a = Ativacao::where('alarme_id', '=', $alarme->id)->latest()->first();
+
+        if($alarme->status === 'ativado') {
+            $disparo = Disparo::where('ativacao_id', '=', $a->id)->where('silenciado', '=', false)->latest()->first();
+
+            $atualizou = $disparo->update([
+                'silenciado' => true
+            ]);
+
+            if (!$atualizou) {
+                return response()->json([
+                    "message" => "Não foi possível silenciar o alarme. (500)"
+                ], 500);
+            }
+
+            return redirect()
+            ->route('alarmes.gerenciar', $alarme)
+            ->withSuccess('Alarme silenciado.');
+
+        } else {
+            return redirect()
+            ->route('alarmes.gerenciar', $alarme)
+            ->withError('Alarme não pode ser silenciado.');
+        }
     }
 }
