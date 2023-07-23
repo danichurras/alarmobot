@@ -9,6 +9,7 @@ use App\Models\Disparo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
@@ -96,7 +97,7 @@ class AlarmeController extends Controller
             ], 404);
         }
 
-        foreach ($a->ativacaos as $ativacao) 
+        foreach ($a->ativacaos as $ativacao)
         {
             foreach ($ativacao->disparos as $disparo)
             {
@@ -122,7 +123,7 @@ class AlarmeController extends Controller
     public function gerenciar(int $id) : View
     {
         $alarme = Alarme::findOrFail($id);
-        
+
         $disparado = $alarme->disparado;
 
         return view('alarmes.gerenciar', compact('alarme', 'disparado'));
@@ -131,9 +132,10 @@ class AlarmeController extends Controller
     public function atualizarStatus(int $id) : RedirectResponse|JsonResponse
     {
         $alarme = Alarme::findOrFail($id);
+        $mac = $alarme->mac_esp;
 
         $newStatus = ($alarme->status == 'desativado') ? 'ativado' : 'desativado';
-
+        Artisan::call("mqtt:publish toggle/$mac");
         $atualizou = $alarme->update([
             'status' => $newStatus
         ]);
@@ -159,7 +161,7 @@ class AlarmeController extends Controller
             }
         } else {
             $a = Ativacao::where('alarme_id', '=', $alarme->id)->latest()->first();
-            
+
             $atualizouAtiv = $a->update([
                 'data_desativacao' => now()
             ]);
@@ -179,7 +181,8 @@ class AlarmeController extends Controller
     public function silenciar (int $id) {
 
         $alarme = Alarme::findOrFail($id);
-
+        $mac = $alarme->mac_esp;
+        Artisan::call("mqtt:publish toggle/$mac -s");
         $a = Ativacao::where('alarme_id', '=', $alarme->id)->latest()->first();
 
         if($alarme->status === 'ativado') {

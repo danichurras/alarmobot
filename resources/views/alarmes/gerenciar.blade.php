@@ -1,12 +1,12 @@
 <style>
     td {
-        border: 1px solid ghostwhite; 
+        border: 1px solid ghostwhite;
         padding-left: 10px;
         padding-right: 10px;
     }
 
     th {
-        border: 1px solid ghostwhite; 
+        border: 1px solid ghostwhite;
         text-align: center;
         padding: 5px;
         font-size: 20px;
@@ -56,13 +56,16 @@
     </x-slot>
 
     <div class="py-12">
+
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <livewire:notificacao></livewire:notificacao>
+
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 mt-8">
 
                     <div class="relative sm:flex sm:justify-center">
                         <p style="font-size: 25px;">
-                            O status atual do alarme é: 
+                            O status atual do alarme é:
                             <span style="text-transform: uppercase">
                                 {{$disparado ? 'DISPARADO' : $alarme->status}}
                             </span>
@@ -75,29 +78,29 @@
                                 @csrf
                                 @method('PUT')
                                     <x-danger-button type="submit">
-                                        Silenciar  
+                                        Silenciar
                                     </x-danger-button>
-                            </form> 
+                            </form>
                         </div>
                     @else
                         <div class="relative sm:flex sm:justify-center mt-16">
                             <form method="POST" action="{{route('alarmes.atualizarStatus', $alarme->id)}}">
                                 @csrf
                                 @method('PUT')
-                            
+
                                     @if($alarme->status == "desativado")
                                         <x-success-button type="submit">
                                             Ativar
                                         </x-success-button>
                                     @else
                                         <x-danger-button type="submit">
-                                            Desativar  
+                                            Desativar
                                         </x-danger-button>
                                     @endif
-                            </form> 
+                            </form>
                         </div>
-                    @endif 
-                    
+                    @endif
+
                     <div class="relative sm:flex sm:justify-center mt-14">
                         <p style="font-size: 25px; font-weight: bold;">
                             Ativações
@@ -131,7 +134,7 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-                        </table> 
+                        </table>
                     </div>
 
                     <div class="relative sm:flex sm:justify-center mt-16">
@@ -147,7 +150,7 @@
         <div id="modal_{{$ativacao->id}}" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal({{$ativacao->id}})">&times;</span>
-                
+
                 <div class="relative sm:flex sm:justify-center">
                     <table style="border-collapse: collapse; color:ghostwhite;" border="1">
                         <thead>
@@ -167,7 +170,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                    </table> 
+                    </table>
                 </div>
             </div>
         </div>

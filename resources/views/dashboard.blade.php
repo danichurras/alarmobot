@@ -1,12 +1,12 @@
 <style>
     td {
-        border: 1px solid ghostwhite; 
+        border: 1px solid ghostwhite;
         padding-left: 10px;
         padding-right: 10px;
     }
 
     th {
-        border: 1px solid ghostwhite; 
+        border: 1px solid ghostwhite;
         text-align: center;
         padding: 5px;
         font-size: 20px;
@@ -42,7 +42,7 @@
                                             <th width="200px">Opções</th>
                                         </tr>
                                     </thead>
-        
+
                                     <tbody>
                                         @foreach($alarmes as $alarme)
                                             <tr>
@@ -55,18 +55,18 @@
                                                     <form method="POST" action="{{route('alarmes.atualizarStatus', $alarme->id)}}">
                                                         @csrf
                                                         @method('PUT')
-                                                    
+
                                                             @if($alarme->status == "desativado")
                                                                 <x-success-button type="submit">
                                                                     Ativar
                                                                 </x-success-button>
                                                             @else
                                                                 <x-danger-button type="submit">
-                                                                    Desativar  
+                                                                    Desativar
                                                                 </x-danger-button>
                                                             @endif
-                                                        
-                                
+
+
                                                     </form>
 
                                                 </td>
@@ -88,14 +88,14 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
-                                </table> 
+                                </table>
                             </div>
-        
+
                             <div class="relative sm:flex sm:justify-center mt-16">
                                 <a href="{{ route('alarmes.cadastrar') }}"><x-primary-button type="button">Cadastrar Alarme</x-primary-button></a>
                             </div>
                         @endif
-                    </p>    
+                    </p>
                 </div>
             </div>
         </div>

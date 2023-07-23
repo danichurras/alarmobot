@@ -21,6 +21,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/sub', function () {
+    \Illuminate\Support\Facades\Artisan::call('mqtt:subscribe');
+});
+
+Route::get('/pub', function () {
+    \Illuminate\Support\Facades\Artisan::call('mqtt:publish');
+});
+
 //Dashboard
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])->name('dashboard');

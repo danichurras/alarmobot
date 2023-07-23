@@ -6,6 +6,7 @@ use App\Events\MqttMessageReceived;
 use App\Models\Alarme;
 use App\Models\Ativacao;
 use App\Models\Disparo;
+use App\Notifications\AlarmeDisparadoNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
@@ -30,10 +31,11 @@ class SaveMqttMessageDatabase
 
         $alarme = Alarme::where('mac_esp', $event->message->id)->first();
         $ativacao = $alarme->ativacaos()->latest()->first();
-        Disparo::create([
+        $disparo = Disparo::create([
             'hora_disparo' => $event->message->triggerTime,
             'ativacao_id' => $ativacao->id
         ]);
         $ativacao->update(['disparo' => true]);
+        $alarme->user->notify(new AlarmeDisparadoNotification($disparo));
     }
 }
