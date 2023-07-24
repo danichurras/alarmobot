@@ -46,17 +46,12 @@ class SubscribeToTopic extends Command implements Isolatable
         while (true){
             try {
                 $this->subscribe($topic);
-            } catch (DataTransferException $e) {
-            } catch (InvalidMessageException $e) {
-            } catch (ProtocolViolationException $e) {
-            } catch (RepositoryException $e) {
-            } catch (MqttClientException $e) {
+            } catch (DataTransferException|RepositoryException|MqttClientException|ProtocolViolationException|InvalidMessageException $e) {
             }
             MQTT::clearResolvedInstances();
             unset($this->mqtt);
         }
 
-        $this->info("Finished.");
     }
 
     /**
@@ -81,8 +76,8 @@ class SubscribeToTopic extends Command implements Isolatable
             $message_object = json_decode($message);
             $message_object->triggerTime = Carbon::createFromTimestamp($message_object->triggerTime)->toDayDateTimeString();
             $message = json_encode($message_object);
-            $this->info("Received QoS level 2 message on topic [$topic]: $message");
-        }, 2);
+            $this->info("Received QoS level 1 message on topic [$topic]: $message");
+        }, 1);
         $this->mqtt->loop(true, true);
 
     }

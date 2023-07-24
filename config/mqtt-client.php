@@ -108,8 +108,8 @@ return [
 
                 // Additional settings for the optional auto-reconnect. The delay between reconnect attempts is in seconds.
                 'auto_reconnect' => [
-                    'enabled' => env('MQTT_AUTO_RECONNECT_ENABLED', false),
-                    'max_reconnect_attempts' => env('MQTT_AUTO_RECONNECT_MAX_RECONNECT_ATTEMPTS', 3),
+                    'enabled' => env('MQTT_AUTO_RECONNECT_ENABLED', true),
+                    'max_reconnect_attempts' => env('MQTT_AUTO_RECONNECT_MAX_RECONNECT_ATTEMPTS', 999),
                     'delay_between_reconnect_attempts' => env('MQTT_AUTO_RECONNECT_DELAY_BETWEEN_RECONNECT_ATTEMPTS', 0),
                 ],
 

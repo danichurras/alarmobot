@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use PhpMqtt\Client\Exceptions\DataTransferException;
+use PhpMqtt\Client\Exceptions\RepositoryException;
 use PhpMqtt\Client\Facades\MQTT;
 
 class PublishToTopicCommand extends Command
@@ -21,6 +23,9 @@ class PublishToTopicCommand extends Command
         }
         $topic = $this->argument('topic');
         $this->info("Enviando $msg para $topic");
-        MQTT::connection()->publish($topic, $msg, qualityOfService: 0, retain: true);
+        try {
+            MQTT::connection()->publish($topic, $msg, qualityOfService: 2, retain: true);
+        } catch (DataTransferException|RepositoryException $e) {
+        }
     }
 }
