@@ -20,9 +20,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        MqttMessageReceived::class => [
-            SaveMqttMessageDatabase::class,
-        ]
+//        MqttMessageReceived::class => [
+//            SaveMqttMessageDatabase::class,
+//        ]
     ];
 
     /**
@@ -38,6 +38,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function shouldDiscoverEvents(): bool
     {
-        return false;
+        return true;
     }
 }

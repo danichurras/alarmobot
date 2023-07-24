@@ -2,25 +2,35 @@
 
 namespace App\Http\Livewire;
 
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
-//use WireUi\Traits\Actions;
+
 
 class Notificacao extends Component
 {
-//    use Actions;
+    public $shouldShow = false;
+    public $userId = 1;
+    public $mensagem;
 
-    public function getMensagensProperty()
+    public function mount($userId = 1)
     {
-        $mensagens = [];
-        foreach (auth()->user()->unreadNotifications as $unreadNotification) {
-            $alarme = $unreadNotification['data']['alarme'];
-            $hora = Carbon::createFromTimeString($unreadNotification['data']['hora'])->toDayDateTimeString();
-            $mensagens[] = "$alarme disparou em $hora";
-        }
-
-        return $mensagens;
+        $this->userId = $userId;
     }
+
+    public function getListeners()
+    {
+        return [
+            "echo-private:App.Models.User.{$this->userId},.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated" => 'notifyNew',
+            "echo:canal-alarme,EventoTeste" => "notifyNew"
+        ];
+    }
+
+    public function notifyNew($data)
+    {
+        $this->shouldShow = true;
+        $this->mensagem = $data;
+    }
+
     public function render()
     {
         return view('livewire.notificacao');

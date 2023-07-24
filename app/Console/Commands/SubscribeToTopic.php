@@ -75,9 +75,9 @@ class SubscribeToTopic extends Command implements Isolatable
             $this->info("Received QoS level 1 message on topic [$topic]: $message");
             MqttMessageReceived::dispatch($topic, $message);
 
-            $message_object = json_decode($message);
-            $message_object->triggerTime = Carbon::createFromTimestamp($message_object->triggerTime)->toDayDateTimeString();
-            $message = json_encode($message_object);
+//            $message_object = json_decode($message);
+//            $message_object->triggerTime = Carbon::createFromTimestamp($message_object->triggerTime)->toDayDateTimeString();
+//            $message = json_encode($message_object);
             $this->info("Received QoS level 1 message on topic [$topic]: $message");
         }, 1);
         $this->mqtt->loop(true, true);

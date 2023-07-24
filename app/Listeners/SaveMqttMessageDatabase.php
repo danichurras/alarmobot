@@ -4,14 +4,13 @@ namespace App\Listeners;
 
 use App\Events\MqttMessageReceived;
 use App\Models\Alarme;
-use App\Models\Ativacao;
 use App\Models\Disparo;
 use App\Notifications\AlarmeDisparadoNotification;
+use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
-class SaveMqttMessageDatabase
+class SaveMqttMessageDatabase implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -26,13 +25,14 @@ class SaveMqttMessageDatabase
      */
     public function handle(MqttMessageReceived $event): void
     {
-        $mensagem = json_encode($event->message);
-        Log::info("Subscribe no topic $event->topic retornou uma mensagem $mensagem.");
+        Log::debug("Subscribe no topic $event->topic retornou uma mensagem $event->message.");
 
-        $alarme = Alarme::where('mac_esp', $event->message->id)->first();
+        $mensagem = json_decode($event->message);
+        Log::debug("Mensagem decodificada: " . serialize($mensagem));
+        $alarme = Alarme::where('mac_esp', $mensagem->id)->first();
         $ativacao = $alarme->ativacaos()->latest()->first();
         $disparo = Disparo::create([
-            'hora_disparo' => $event->message->triggerTime,
+            'hora_disparo' => Carbon::createFromTimestamp($mensagem->triggerTime),
             'ativacao_id' => $ativacao->id
         ]);
         $ativacao->update(['disparo' => true]);
