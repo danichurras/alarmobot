@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AlarmeDisparadoNotification extends Notification
+class AlarmeDisparadoNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -30,7 +30,7 @@ class AlarmeDisparadoNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', 'canal-alarme'];
     }
 
     /**
