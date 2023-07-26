@@ -35,7 +35,6 @@
     <main>
         {{ $slot }}
     </main>
-    <iframe src="/silence.mp3" allow="autoplay" id="audio"></iframe>
 </div>
 @livewireScripts
 <script>

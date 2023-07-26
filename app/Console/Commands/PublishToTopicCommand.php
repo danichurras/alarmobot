@@ -24,7 +24,9 @@ class PublishToTopicCommand extends Command
         $topic = $this->argument('topic');
         $this->info("Enviando $msg para $topic");
         try {
-            MQTT::connection()->publish($topic, $msg, qualityOfService: 2, retain: true);
+            $mqtt = MQTT::connection();
+            $mqtt->publish($topic, $msg, qualityOfService: 0, retain: true);
+//            $mqtt->loop(true, true);
         } catch (DataTransferException|RepositoryException $e) {
         }
     }
